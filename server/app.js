@@ -5,12 +5,6 @@ const port = process.env.PORT || 3000;
 const morgan = require('morgan')
 const cors = require('cors')
 
-// const bcrypt = require('bcrypt')
-// const saltRounds = process.env.BCRYPT_SALT || 10;
-
-// var jwt = require('jsonwebtoken');
-// const jwt_secret = process.env.JWT_SECRET_KEY;
-
 //use morgan
 app.use(morgan('dev'))
 //use cors *
@@ -34,8 +28,6 @@ app.get('/', async (req, res) => {
 readdirSync('./Routes')
     .map((fileName) => app.use('/api', require('./Routes/' + fileName)));
 
-
-
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port} ${new Date().toLocaleTimeString()}`)
+    console.log(`Start app listening on port ${port} ${new Date().toLocaleTimeString()}`)
 })
