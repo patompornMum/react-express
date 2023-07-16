@@ -1,10 +1,10 @@
 import React from 'react'
-import HeaderBar from '../../../layout/HeaderBar'
+// import HeaderBar from '../../HeaderBar'
 
 const UserManage = () => {
   return (
     <>
-        <HeaderBar/>
+        {/* <HeaderBar/> */}
         UserManage
     </>
   )
