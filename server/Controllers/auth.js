@@ -49,7 +49,12 @@ exports.login = async (req, res) => {
                 jwt_secret,
                 {expiresIn:'30 days'}
             );
-            res.status(200).json({status:'ok', msg:'login success !', token:token});
+            const userInfo = {
+                id: user.id,
+                username: user.username,
+                role: user.role
+            }
+            res.status(200).json({status:'ok', msg:'login success !', token:token, userInfo:userInfo});
         }else{
             res.status(401).json({status:'error',msg:'password invalid !'});
         }
