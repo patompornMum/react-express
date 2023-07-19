@@ -18,6 +18,10 @@ import { Link } from 'react-router-dom'
 //Service
 import { login, register } from '../../../services/auth';
 
+//Redux
+import { useDispatch } from "react-redux";
+import { login as loginRedux } from "../../../store/userSlice";
+
 import { useState } from 'react';
 
 
@@ -35,6 +39,8 @@ const alertBox = (severity = 'success', msg) => {
 
 export default function SignInSide() {
 
+  const dispatch = useDispatch();
+
   const [alertLogin, setAlertLogin] = useState(false);
 
   const handleSubmit = (event) => {
@@ -50,12 +56,22 @@ export default function SignInSide() {
     login(payload)
       .then((res) => {
         console.log(res)
-        setAlertLogin(alertBox('success',res.data.msg))
+        setAlertLogin(alertBox('success', res.data.msg))
+
+        dispatch(
+          loginRedux({
+            name: res.data.userInfo.username,
+            role: res.data.userInfo.role,
+            token: res.data.token,
+          })
+        );
+        localStorage.setItem("token", res.data.token);
+
       })
       .catch((err) => {
         console.log(err)
         const errMsg = err.response?.data.msg ?? 'login fails.';
-        setAlertLogin(alertBox('error',errMsg))
+        setAlertLogin(alertBox('error', errMsg))
       })
 
   };
