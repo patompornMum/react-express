@@ -8,12 +8,17 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+
+import { Alert, Collapse } from '@mui/material';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { Link } from 'react-router-dom'
 
 //Service
-import { test } from '../../../services/auth';
+import { login, register } from '../../../services/auth';
+
+import { useState } from 'react';
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -21,19 +26,34 @@ import { test } from '../../../services/auth';
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
+  
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMsg, setAlertMsg] = useState(null);
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // test().then((res) => {
-    //   console.log(res)
-    // })
-
     const data = new FormData(event.currentTarget);
-    console.log({
+    const payload = {
       username: data.get('username'),
-      password: data.get('password'),
-    });
+      password: data.get('password')
+    }
+    // console.log(payload);
+
+    login(payload)
+      .then((res) => {
+        console.log(res)
+        alert(res.data.msg)
+        setAlertOpen(false)
+      })
+      .catch((err) => {
+        console.log(err)
+        const errMsg = err.response?.data.msg ?? 'login fails.';
+        setAlertMsg(errMsg)
+        setAlertOpen(true)
+      })
+
   };
 
   return (
@@ -70,6 +90,13 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
+            <Box sx={{ mt: 1 }}>
+              <Collapse in={alertOpen}>
+                <Alert severity="error">
+                  {alertMsg}
+                </Alert>
+              </Collapse>
+            </Box>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
@@ -105,7 +132,7 @@ export default function SignInSide() {
                 to="/register"
                 fullWidth
                 variant="outlined"
-                sx={{mt:3, mb:3}}
+                sx={{ mt: 3, mb: 3 }}
               >
                 Register
               </Button>

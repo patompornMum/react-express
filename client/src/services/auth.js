@@ -1,12 +1,13 @@
 import axios from "axios";
 
-export const register = async (data) =>
-  await axios.post(process.env.REACT_APP_API + "/register", data);
+const server_api_url = import.meta.env.VITE_SERVER_API_URL ?? null;
 
-export const login = async (data) =>
-  await axios.post(process.env.REACT_APP_API + "/login", data);
-
-export const test = async(data)=>{
-    // console.log('test');
-    return "123";
+export const register = async (data) => {
+  return await axios.post(`${server_api_url}/register`, data);
 }
+
+export const login = async (data) => {
+  return await axios.post(`${server_api_url}/login`, data);
+}
+
+
