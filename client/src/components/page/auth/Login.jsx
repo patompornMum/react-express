@@ -25,11 +25,17 @@ import { useState } from 'react';
 
 const defaultTheme = createTheme();
 
-export default function SignInSide() {
-  
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [alertMsg, setAlertMsg] = useState(null);
+const alertBox = (severity = 'success', msg) => {
+  return (
+    <Alert severity={severity}>
+      {msg}
+    </Alert>
+  );
+}
 
+export default function SignInSide() {
+
+  const [alertLogin, setAlertLogin] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -44,14 +50,12 @@ export default function SignInSide() {
     login(payload)
       .then((res) => {
         console.log(res)
-        alert(res.data.msg)
-        setAlertOpen(false)
+        setAlertLogin(alertBox('success',res.data.msg))
       })
       .catch((err) => {
         console.log(err)
         const errMsg = err.response?.data.msg ?? 'login fails.';
-        setAlertMsg(errMsg)
-        setAlertOpen(true)
+        setAlertLogin(alertBox('error',errMsg))
       })
 
   };
@@ -91,11 +95,15 @@ export default function SignInSide() {
               Sign in
             </Typography>
             <Box sx={{ mt: 1 }}>
-              <Collapse in={alertOpen}>
+              {/* <Collapse in={alertOpen}>
                 <Alert severity="error">
                   {alertMsg}
                 </Alert>
-              </Collapse>
+              </Collapse> */}
+              {
+                alertLogin &&
+                alertLogin
+              }
             </Box>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
