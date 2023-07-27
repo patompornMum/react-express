@@ -51,6 +51,12 @@ export default function Register() {
     }
     console.log(payload);
 
+    //check Input Username Password
+    if(!payload.username || !payload.password){
+      setAlertLogin(alertBox('error','Please enter your username, password.'))
+      return ;
+    }
+
     register(payload)
       .then((res) => {
         console.log(res)
@@ -107,7 +113,8 @@ export default function Register() {
             </Box>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
-                margin="normal"
+                // error={true} 
+                // helperText="Error"
                 required
                 fullWidth
                 id="username"

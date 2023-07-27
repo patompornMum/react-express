@@ -53,6 +53,12 @@ export default function SignInSide() {
     }
     // console.log(payload);
 
+    //check Input Username Password
+    if(!payload.username || !payload.password){
+      setAlertLogin(alertBox('error','Please enter your username, password.'))
+      return false;
+    }
+
     login(payload)
       .then((res) => {
         console.log(res)
