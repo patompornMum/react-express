@@ -62,13 +62,14 @@ export default function SignInSide() {
     login(payload)
       .then((res) => {
         console.log(res)
-        setAlertLogin(alertBox('success', res.data.msg))
+        setAlertLogin(alertBox('success', res.data.msg));
 
         dispatch(
           loginRedux({
             name: res.data.userInfo.username,
             role: res.data.userInfo.role,
             token: res.data.token,
+            expToken: res.data.userInfo.expToken
           })
         );
         localStorage.setItem("token", res.data.token);
