@@ -13,7 +13,7 @@ import { Alert, Collapse } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 //Service
 import { login, register } from '../../../services/auth';
@@ -42,6 +42,8 @@ export default function SignInSide() {
   const dispatch = useDispatch();
 
   const [alertLogin, setAlertLogin] = useState(false);
+
+  const navi = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -73,7 +75,7 @@ export default function SignInSide() {
           })
         );
         localStorage.setItem("token", res.data.token);
-
+        navi('/feed');
       })
       .catch((err) => {
         console.log(err)
