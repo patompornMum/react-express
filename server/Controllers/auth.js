@@ -74,3 +74,30 @@ exports.login = async (req, res) => {
         res.status(500).json({ status: 'error', msg: 'Server Error' });
     }
 };
+
+exports.tokenInfo = async (req, res) => {
+    try {
+        const bearerToken = req.headers.authorization?.split(' ')[1];
+
+        if (!bearerToken) {
+            return res.status(401).json({ status: 'error', msg: 'Token Invalid' });
+        }
+
+        // const decoded = jwt.verify(bearerToken, jwt_secret)
+        const decoded = jwt.verify(bearerToken, jwt_secret, function(err, decoded) {
+            if(err){
+                res.status(500).json({ status: 'error', msg: err.message ?? 'Token Error'});
+                return 
+            }
+            return decoded
+        });
+
+        // console.log(decoded);
+        return res.status(200).json(decoded);
+    } catch (err) { 
+        // console.log(err.message);
+        console.log(err)
+
+        res.status(500).json({ status: 'error', msg: 'Server Error' });
+    }
+};
