@@ -59,13 +59,14 @@ exports.login = async (req, res) => {
                 },
                 jwt_secret
             );
-            const userInfo = {
-                id: user.id,
-                username: user.username,
-                role: user.role,
-                expToken: expToken
-            }
-            res.status(200).json({ status: 'ok', msg: 'login success !', token: token, userInfo: userInfo });
+            res.status(200).json({ status: 'ok', msg: 'login success !', token: token});
+            // const userInfo = {
+            //     id: user.id,
+            //     username: user.username,
+            //     role: user.role,
+            //     expToken: expToken
+            // }
+            // res.status(200).json({ status: 'ok', msg: 'login success !', token: token, userInfo: userInfo });
         } else {
             res.status(401).json({ status: 'error', msg: 'password invalid !' });
         }
