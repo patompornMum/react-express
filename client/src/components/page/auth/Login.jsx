@@ -39,7 +39,7 @@ const alertBox = (severity = 'success', msg) => {
 
 export default function SignInSide() {
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [alertLogin, setAlertLogin] = useState(false);
 
@@ -56,8 +56,8 @@ export default function SignInSide() {
     // console.log(payload);
 
     //check Input Username Password
-    if(!payload.username || !payload.password){
-      setAlertLogin(alertBox('error','Please enter your username, password.'))
+    if (!payload.username || !payload.password) {
+      setAlertLogin(alertBox('error', 'Please enter your username, password.'))
       return false;
     }
 
@@ -66,14 +66,14 @@ export default function SignInSide() {
         console.log(res)
         setAlertLogin(alertBox('success', res.data.msg));
 
-        dispatch(
-          loginRedux({
-            name: res.data.userInfo.username,
-            role: res.data.userInfo.role,
-            token: res.data.token,
-            expToken: res.data.userInfo.expToken
-          })
-        );
+        // dispatch(
+        //   loginRedux({
+        //     name: res.data.userInfo.username,
+        //     role: res.data.userInfo.role,
+        //     token: res.data.token,
+        //     expToken: res.data.userInfo.expToken
+        //   })
+        // );
         localStorage.setItem("token", res.data.token);
         navi('/feed');
       })

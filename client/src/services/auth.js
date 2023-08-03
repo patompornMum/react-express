@@ -10,4 +10,8 @@ export const login = async (data) => {
   return await axios.post(`${server_api_url}/login`, data);
 }
 
-
+export const tokenInfo = async (token) => {
+  return await axios.post(`${server_api_url}/tokenInfo`, {}, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+}
