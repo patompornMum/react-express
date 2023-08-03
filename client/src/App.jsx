@@ -12,7 +12,7 @@ import UserManage from "./components/page/user/UserManage";
 import Feed from './components/page/feed/Feed';
 
 //Protect Route
-import {CheckAuth} from './router/CheckAuth';
+import { CheckAuth } from './router/CheckAuth';
 
 //Layouts
 import MainLayout from "./layouts/MainLayout";
@@ -23,14 +23,23 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="*" element={<Notfound404 text="Page Not Found" />} />
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        <Route 
+        //Route Admin
+        <Route
           element={<CheckAuth redirectPath='/login' role='admin'><MainLayout /></CheckAuth>}
         >
-          <Route path="/feed" element={<Feed />} />
           <Route path="/user-manage" element={<UserManage />} />
+        </Route>
+
+
+        //Route User
+        <Route
+          element={<CheckAuth redirectPath='/login' role='user'><MainLayout /></CheckAuth>}
+        >
+          <Route path="/feed" element={<Feed />} />
         </Route>
 
         //ของจารสามิตร์

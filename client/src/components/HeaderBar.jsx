@@ -13,36 +13,52 @@ import {
   ListItemButton,
   Box,
 } from '@mui/material';
-import { Menu, Mail, MoveToInbox, Feed, People } from '@mui/icons-material';
+import { Menu, Mail, MoveToInbox, Feed, People, Logout } from '@mui/icons-material';
+
+//Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../store/userSlice';
 
 const pages = [
   {
     title: "Feed",
     icon: <Feed />,
-    to: "/feed"
+    to: "/feed",
   },
   {
     title: "User Manage",
     icon: <People />,
-    to: "/user-manage"
+    to: "/user-manage",
+    role: "admin"
   },
   {
-    title: "Mail 1",
-    icon: <Mail />,
-    to: '#',
-    activeTo:"/feed"
-  },
-  {
-    title: "Mail 2",
-    icon: <MoveToInbox />,
-    to: '#',
-    activeTo:"/user-manage"
+    title: 'Logout',
+    icon: <Logout />,
+    to: '#'
   }
+  // {
+  //   title: "Mail 1",
+  //   icon: <Mail />,
+  //   to: '#',
+  //   activeTo:"/feed"
+  // },
+  // {
+  //   title: "Mail 2",
+  //   icon: <MoveToInbox />,
+  //   to: '#',
+  //   activeTo:"/user-manage"
+  // }
 ];
 
 const HeaderBar = () => {
+
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => ({ ...state }));
+  const roleUser = user.info.role ?? null;
+
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState(null);
+  const [activeItem, setActiveItem] = useState(window.location.pathname);
 
   const toggleDrawer = () => {
     setDrawerOpen(!isDrawerOpen);
@@ -51,6 +67,10 @@ const HeaderBar = () => {
   const handleItemClick = (linkName) => {
     setActiveItem(linkName);
     console.log(linkName)
+  }
+
+  const handleLogoutClick = () => {
+    dispatch(logout());
   }
 
   return (
@@ -78,10 +98,18 @@ const HeaderBar = () => {
               <ListItem
                 key={index}
                 disablePadding
-                component={Link} 
+                component={Link}
                 to={page.to}
-                sx={{color:'black'}}
-                onClick={() => handleItemClick(page.activeTo??page.to)}
+                sx={{
+                  color: 'black',
+                  display: (page.role && roleUser != page.role) ? 'none' : ''
+                }}
+                // onClick={() => handleItemClick(page.activeTo??page.to)}
+                onClick={() => {
+                  page.title == 'Logout'
+                    ? handleLogoutClick()
+                    : handleItemClick(page.activeTo ?? page.to)
+                }}
               >
                 <ListItemButton selected={activeItem === page.to}>
                   <ListItemIcon>
