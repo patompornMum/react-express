@@ -39,7 +39,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
-(1, 'patomporn', '$2b$10$uuQ8t060L.hQEb9ouyICW.GYY2QaLaPOJBxVukbcvYURnDkrmlVsW', 'user');
+(1, 'admin', '$2b$10$ZJzc2ogkf5pQIT7me2DrjeCDht0SD.EviJ8oqBFollkMEUWYxB61K', 'admin');
 
 --
 -- Indexes for dumped tables
