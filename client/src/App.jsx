@@ -16,6 +16,7 @@ import { CheckAuth } from './router/CheckAuth';
 
 //Layouts
 import MainLayout from "./layouts/MainLayout";
+import NewFeed from "./components/page/feed/NewFeed";
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
           element={<CheckAuth redirectPath='/login' role='user'><MainLayout /></CheckAuth>}
         >
           <Route path="/feed" element={<Feed />} />
+          <Route path="/new-feed" element={<NewFeed/>}/>
         </Route>
 
         //ของจารสามิตร์

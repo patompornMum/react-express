@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -35,7 +35,7 @@ const pages = [
     title: 'Logout',
     icon: <Logout />,
     to: '#'
-  }
+  },
   // {
   //   title: "Mail 1",
   //   icon: <Mail />,
@@ -52,13 +52,18 @@ const pages = [
 
 const HeaderBar = () => {
 
+  const location = useLocation();
+  useEffect(() => {
+    setActiveItem(location.pathname)
+  }, [location]);
+
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => ({ ...state }));
   const roleUser = user.info.role ?? null;
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState(window.location.pathname);
+  const [activeItem, setActiveItem] = useState(location.pathname);
 
   const toggleDrawer = () => {
     setDrawerOpen(!isDrawerOpen);
