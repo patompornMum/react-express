@@ -22,7 +22,7 @@ exports.auth = async (req, res, next) => {
 exports.adminCheck = async (req, res, next) => {
     try {
         const { role } = req.authData;
-        console.log(role)
+        // console.log(role)
 
         if(role !== 'admin'){
             return res.status(403).json({ status: 'error', msg: 'Access Denied!' });
