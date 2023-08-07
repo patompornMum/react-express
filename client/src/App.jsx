@@ -41,7 +41,7 @@ function App() {
           element={<CheckAuth redirectPath='/login' role='user'><MainLayout /></CheckAuth>}
         >
           <Route path="/feed" element={<Feed />} />
-          <Route path="/feed/new" element={<NewFeed/>}/>
+          <Route path="/feed/new" element={<NewFeed />} />
         </Route>
 
         //ของจารสามิตร์
