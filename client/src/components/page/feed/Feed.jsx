@@ -15,6 +15,7 @@ import {
 import { Add, BorderColorTwoTone, Favorite, FavoriteTwoTone } from '@mui/icons-material';
 
 import { blue } from '@mui/material/colors';
+import { Link } from 'react-router-dom';
 
 const data = [
   { id: 1, text: 'hello1', createdBy: 'Admin' },
@@ -84,13 +85,19 @@ const Feed = () => {
         </Grid>
       </Grid>
 
-      <Box position="fixed" bottom="20px" right="20px">
+      <Box
+        position="fixed"
+        bottom="20px"
+        right="20px"
+        component={Link}
+        to="/feed/new"
+      >
         <Fab color="primary" variant="extended">
-          <Add sx={{marginRight:{md:1}}} />
-          <Typography display={{xs:'none',md:'block'}}>New</Typography>
+          <Add sx={{ marginRight: { md: 1 } }} />
+          <Typography display={{ xs: 'none', md: 'block' }}>New</Typography>
         </Fab>
       </Box>
-      
+
     </Container>
   )
 }

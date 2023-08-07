@@ -10,13 +10,13 @@ import Login from './components/page/auth/Login';
 import Register from "./components/page/auth/Register";
 import UserManage from "./components/page/user/UserManage";
 import Feed from './components/page/feed/Feed';
+import NewFeed from "./components/page/feed/NewFeed";
 
 //Protect Route
 import { CheckAuth } from './router/CheckAuth';
 
 //Layouts
 import MainLayout from "./layouts/MainLayout";
-import NewFeed from "./components/page/feed/NewFeed";
 
 function App() {
 
@@ -41,7 +41,7 @@ function App() {
           element={<CheckAuth redirectPath='/login' role='user'><MainLayout /></CheckAuth>}
         >
           <Route path="/feed" element={<Feed />} />
-          <Route path="/new-feed" element={<NewFeed/>}/>
+          <Route path="/feed/new" element={<NewFeed/>}/>
         </Route>
 
         //ของจารสามิตร์

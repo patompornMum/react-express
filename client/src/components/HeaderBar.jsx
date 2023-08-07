@@ -54,7 +54,11 @@ const HeaderBar = () => {
 
   const location = useLocation();
   useEffect(() => {
-    setActiveItem(location.pathname)
+    let pathName = location.pathname;
+    if(pathName.startsWith('/feed')){
+      pathName = '/feed'
+    }
+    setActiveItem(pathName)
   }, [location]);
 
   const dispatch = useDispatch();
@@ -113,7 +117,7 @@ const HeaderBar = () => {
                 onClick={() => {
                   page.title == 'Logout'
                     ? handleLogoutClick()
-                    : handleItemClick(page.activeTo ?? page.to)
+                    : handleItemClick(page.to)
                 }}
               >
                 <ListItemButton selected={activeItem === page.to}>
