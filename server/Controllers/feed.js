@@ -3,7 +3,11 @@ const fs = require('fs');
 
 exports.list = async (req, res) => {
     try {
-        const feed = await db('feed').select();
+        const feed = await db('feed')
+            .select('feed.*', 'users.username as created_by')
+            .join('users', 'feed.user_id', '=', 'users.id')
+            .orderBy('feed.id', 'desc')
+
         res.status(200).json(feed);
     } catch (err) {
         console.log(err.message);
