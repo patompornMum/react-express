@@ -17,6 +17,7 @@ import { CheckAuth } from './router/CheckAuth';
 
 //Layouts
 import MainLayout from "./layouts/MainLayout";
+import UpdateFeed from "./components/page/feed/EditFeed";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
         >
           <Route path="/feed" element={<Feed />} />
           <Route path="/feed/new" element={<NewFeed />} />
+          <Route path="/feed/edit/:id" element={<UpdateFeed />} />
         </Route>
 
         //ของจารสามิตร์

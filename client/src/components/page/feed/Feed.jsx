@@ -82,7 +82,12 @@ const Feed = () => {
                       <Typography gutterBottom variant="h5" component="div">
                         {row.title}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography
+                        component="pre"
+                        variant="body2"
+                        color="text.secondary"
+                        style={{ whiteSpace: 'pre-wrap' }}
+                      >
                         {row.content}
                       </Typography>
                     </CardContent>
@@ -91,7 +96,11 @@ const Feed = () => {
                         <FavoriteTwoTone sx={{ color: '' }} />
                       </IconButton>
                       {row.user_id == user_id && (
-                        <IconButton sx={{ paddingRight: 0 }}>
+                        <IconButton
+                          sx={{ paddingRight: 0 }}
+                          component={Link}
+                          to={`/feed/edit/${row.id}`}
+                        >
                           <BorderColorTwoTone sx={{ color: 'green' }} />
                         </IconButton>
                       )}
