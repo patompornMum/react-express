@@ -50,6 +50,17 @@ const Feed = () => {
       .catch((err) => console.log(err))
   }
 
+  const handleClickFavorite = (feedId, feedIndex) => {
+
+    console.log('click Favorite '+feedId)
+
+    const updatedData = [...data];
+    const toggleLike = (updatedData[feedIndex].like_status === 1) ? 0 : 1;
+    updatedData[feedIndex].like_status = toggleLike;
+
+    setData(updatedData);
+  }
+
   return (
     <Container maxWidth={false} sx={{ padding: 2 }}>
       <Grid container spacing={2}>
@@ -92,8 +103,14 @@ const Feed = () => {
                       </Typography>
                     </CardContent>
                     <CardActions sx={{ borderTop: '1px solid #e4e4e4' }}>
-                      <IconButton sx={{ paddingRight: 0 }}>
-                        <FavoriteTwoTone sx={{ color: '' }} />
+                      <IconButton
+                        sx={{
+                          paddingRight: 0,
+                          color: row.like_status ? 'red' : ''
+                        }}
+                        onClick={() => { handleClickFavorite(row.id, index) }}
+                      >
+                        <FavoriteTwoTone />
                       </IconButton>
                       {row.user_id == user_id && (
                         <IconButton
