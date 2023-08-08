@@ -8,8 +8,20 @@ export const list = async (token) => {
     });
 }
 
+export const read = async (token, id) => {
+    return await axios.get(`${server_api_url}/feed/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+}
+
 export const create = async (token, data) => {
     return await axios.post(`${server_api_url}/feed`, data, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+}
+
+export const update = async (token, id, data) => {
+    return await axios.put(`${server_api_url}/feed/${id}`, data, {
         headers: { Authorization: `Bearer ${token}` }
     });
 }
