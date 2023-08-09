@@ -3,9 +3,22 @@ const fs = require('fs');
 
 exports.list = async (req, res) => {
     try {
+        
+        const { id: user_id } = req.authData;
+
+        // const feedOriginal = await db('feed')
+        //     .select('feed.*', 'users.username as created_by')
+        //     .join('users', 'feed.user_id', '=', 'users.id')
+        //     .orderBy('feed.id', 'desc')
+
         const feed = await db('feed')
-            .select('feed.*', 'users.username as created_by')
-            .join('users', 'feed.user_id', '=', 'users.id')
+            .select('feed.*', 'users.username AS created_by')
+            .select(db.raw('IF(likes.id, true, false) AS like_status'))
+            .leftJoin('users', 'feed.user_id', '=', 'users.id')
+            .leftJoin('likes', function () {
+                this.on('likes.feed_id', '=', 'feed.id')
+                    .andOn('likes.user_id', '=', user_id)
+            })
             .orderBy('feed.id', 'desc')
 
         res.status(200).json(feed);
