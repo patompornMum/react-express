@@ -1,3 +1,4 @@
+import { Add, BorderColorTwoTone, FavoriteTwoTone } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -7,12 +8,13 @@ import {
   CardHeader,
   CardMedia,
   Container,
+  Divider,
   Fab,
   Grid,
   IconButton,
+  Stack,
   Typography
-} from '@mui/material'
-import { Add, BorderColorTwoTone, Favorite, FavoriteTwoTone } from '@mui/icons-material';
+} from '@mui/material';
 
 import { blue } from '@mui/material/colors';
 import { Link } from 'react-router-dom';
@@ -24,6 +26,7 @@ import { useSelector } from 'react-redux';
 
 //service
 import { list } from '../../../services/feed';
+import { like, unlike } from '../../../services/like';
 
 //URL PUBLIC SERVER
 const server_public_url = import.meta.env.VITE_SERVER_PUBLIC_URL ?? null;
@@ -50,15 +53,29 @@ const Feed = () => {
       .catch((err) => console.log(err))
   }
 
-  const handleClickFavorite = (feedId, feedIndex) => {
-
-    console.log('click Favorite '+feedId)
-
+  const handleClickFavorite = async (feedId, feedIndex) => {
     const updatedData = [...data];
     const toggleLike = (updatedData[feedIndex].like_status === 1) ? 0 : 1;
     updatedData[feedIndex].like_status = toggleLike;
+    updatedData[feedIndex].likes = updatedData[feedIndex].likes + ((toggleLike) ? +1 : -1);
 
     setData(updatedData);
+
+    if (toggleLike == 1) {
+      //Like API
+      await like(token, { feedId: feedId })
+        .then((res) => {
+          console.log(`Feed ID ${feedId} // Like`)
+        })
+        .catch((err) => console.log(err))
+    } else {
+      //Unlike API
+      await unlike(token, { feedId: feedId })
+        .then((res) => {
+          console.log(`Feed ID ${feedId} // Unlike`)
+        })
+        .catch((err) => console.log(err))
+    }
   }
 
   return (
@@ -103,24 +120,39 @@ const Feed = () => {
                       </Typography>
                     </CardContent>
                     <CardActions sx={{ borderTop: '1px solid #e4e4e4' }}>
-                      <IconButton
-                        sx={{
-                          paddingRight: 0,
-                          color: row.like_status ? 'red' : ''
-                        }}
-                        onClick={() => { handleClickFavorite(row.id, index) }}
+                      <Stack
+                        direction="row"
+                        divider={<Divider orientation="vertical" flexItem />}
+                        spacing={2}
                       >
-                        <FavoriteTwoTone />
-                      </IconButton>
-                      {row.user_id == user_id && (
-                        <IconButton
-                          sx={{ paddingRight: 0 }}
-                          component={Link}
-                          to={`/feed/edit/${row.id}`}
-                        >
-                          <BorderColorTwoTone sx={{ color: 'green' }} />
-                        </IconButton>
-                      )}
+                        <>
+                          <IconButton
+                            sx={{
+                              color: row.like_status ? 'red' : ''
+                            }}
+                            onClick={() => { handleClickFavorite(row.id, index) }}
+                          >
+                            <FavoriteTwoTone />
+                          </IconButton>
+                          {row.likes > 0 &&
+                            <Typography
+                              paddingY={1}
+                              style={{ marginLeft: 0 }}
+                            >
+                              {row.likes} Likes
+                            </Typography>
+                          }
+                        </>
+                        {row.user_id == user_id && (
+                          <IconButton
+                            component={Link}
+                            to={`/feed/edit/${row.id}`}
+                          >
+                            <BorderColorTwoTone sx={{ color: 'green' }} />
+                          </IconButton>
+                        )}
+                      </Stack>
+
                     </CardActions>
                   </Card>
                 </Grid>
