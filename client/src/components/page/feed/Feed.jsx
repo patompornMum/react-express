@@ -1,6 +1,8 @@
-import { Add, BorderColorTwoTone, FavoriteTwoTone } from '@mui/icons-material';
+import { Add, BorderColorTwoTone, ContactPageTwoTone, FavoriteTwoTone, FeedTwoTone } from '@mui/icons-material';
 import {
   Avatar,
+  BottomNavigation,
+  BottomNavigationAction,
   Box,
   Card,
   CardActions,
@@ -13,6 +15,8 @@ import {
   Grid,
   IconButton,
   Stack,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography
 } from '@mui/material';
 
@@ -33,6 +37,7 @@ const server_public_url = import.meta.env.VITE_SERVER_PUBLIC_URL ?? null;
 
 const Feed = () => {
   const [data, setData] = useState([]);
+  const [feedType, setFeedType] = useState('feed');
 
   //redux
   const { user: reduxUser } = useSelector((state) => ({ ...state }));
@@ -40,17 +45,28 @@ const Feed = () => {
   const user_id = reduxUser.info.id;
 
   useEffect(() => {
-    loadDataFeed(token);
+    loadDataFeed(token, feedType);
   }, []);
 
-  const loadDataFeed = async (token) => {
+  const loadDataFeed = async (token, feedType) => {
     console.log('LoadData')
-    await list(token)
-      .then((res) => {
-        setData(res.data)
-        console.log(res)
-      })
+    console.log(feedType)
+
+    const respData = await list(token)
+      .then((res) => res.data)
       .catch((err) => console.log(err))
+
+    console.log(respData)
+
+    if (feedType == "favorite") {
+      const filteredLikeStatus = await respData.filter(item => item.like_status === 1);
+      setData(filteredLikeStatus);
+    } else if (feedType == "myFeed") {
+      const filteredLikeStatus = await respData.filter(item => item.user_id === user_id);
+      setData(filteredLikeStatus);
+    } else {
+      setData(respData)
+    }
   }
 
   const handleClickFavorite = async (feedId, feedIndex) => {
@@ -78,9 +94,16 @@ const Feed = () => {
     }
   }
 
+  const handleChangeFeedType = async (event, nextView) => {
+    if (nextView !== null) {
+      setFeedType(nextView)
+      loadDataFeed(token, nextView);
+    }
+  }
+
   return (
     <Container maxWidth={false} sx={{ padding: 2 }}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} paddingBottom={{ xs: 10, md: 2 }}>
         <Grid item xs={0} md={3} display={{ xs: 'none', md: 'block' }}> </Grid>
         <Grid item xs={0} md={6}>
           <Grid container spacing={{ xs: 3, md: 4 }}>
@@ -160,20 +183,79 @@ const Feed = () => {
             })}
           </Grid>
         </Grid>
+        {/* PC RIGHT BAR */}
         <Grid item xs={0} md={3} display={{ xs: 'none', md: 'block' }}>
           <Card
             variant="outlined"
             sx={{ borderRadius: 4, position: 'sticky', top: '80px' }}
           >
             <CardHeader subheader="Tools" />
+            <CardContent>
+              <ToggleButtonGroup
+                orientation="vertical"
+                value={feedType}
+                exclusive
+                size="small"
+                fullWidth={true}
+                onChange={handleChangeFeedType}
+              >
+                <ToggleButton value="feed" sx={{ justifyContent: 'start' }}>
+                  <FeedTwoTone />
+                  <Typography paddingX={1}>Feed</Typography>
+                </ToggleButton>
+                <ToggleButton value="favorite" sx={{ justifyContent: 'start' }}>
+                  <FavoriteTwoTone />
+                  <Typography paddingX={1}>FAVORITE</Typography>
+                </ToggleButton>
+                <ToggleButton value="myFeed" sx={{ justifyContent: 'start' }}>
+                  <ContactPageTwoTone />
+                  <Typography paddingX={1}>MY FEED</Typography>
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </CardContent>
           </Card>
         </Grid>
       </Grid>
 
+      {/* Mobile Bottom Bar */}
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          borderTop: '2px solid #e4e4e4'
+        }}
+        display={{ xs: 'block', md: 'none' }}
+      >
+        <BottomNavigation
+          showLabels
+          value={feedType}
+          onChange={handleChangeFeedType}
+        >
+          <BottomNavigationAction
+            label="Feed"
+            value="feed"
+            icon={<FeedTwoTone />}
+          />
+          <BottomNavigationAction
+            label="Favorite"
+            value="favorite"
+            icon={<FavoriteTwoTone />}
+          />
+          <BottomNavigationAction
+            label="My Feed"
+            value="myFeed"
+            icon={<ContactPageTwoTone />}
+          />
+        </BottomNavigation>
+      </Box>
+
+      {/* Button New Feed */}
       <Box
         position="fixed"
-        bottom="20px"
-        right="20px"
+        bottom={{ xs: '60px', md: '20px' }}
+        right={{ xs: '1px', md: '20px' }}
         component={Link}
         to="/feed/new"
       >
