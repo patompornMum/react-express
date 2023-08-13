@@ -19,11 +19,16 @@ import MainLayout from "./layouts/MainLayout";
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+//redux
+import { useSelector } from 'react-redux';
+
 function App() {
+
+  const { theme } = useSelector((state) => state.theme);
 
   const darkTheme = createTheme({
     palette: {
-      mode: 'light'
+      mode: theme
     },
   });
 

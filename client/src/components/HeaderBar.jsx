@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom'
+
+import { DarkMode, Feed, LightMode, Logout, Menu, People } from '@mui/icons-material';
 import {
   AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
+  Box,
   Drawer,
+  IconButton,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
-  ListItemButton,
-  Box,
+  Toolbar,
+  Typography,
 } from '@mui/material';
-import { Menu, Mail, MoveToInbox, Feed, People, Logout } from '@mui/icons-material';
+import { blue } from '@mui/material/colors';
+import { Link, useLocation } from 'react-router-dom';
 
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
+import { setModeDark, setModeLight } from '../store/themeSlice';
 import { logout } from '../store/userSlice';
-import { blue } from '@mui/material/colors';
 
 const pages = [
   {
@@ -65,6 +67,7 @@ const HeaderBar = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => ({ ...state }));
+  const { theme } = useSelector((state) => state.theme);
   const roleUser = user.info.role ?? null;
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
@@ -83,6 +86,14 @@ const HeaderBar = () => {
     dispatch(logout());
   }
 
+  const handleChangeModeClick = () => {
+    if (theme == 'dark') {
+      dispatch(setModeLight());
+    } else {
+      dispatch(setModeDark());
+    }
+  }
+
   return (
     <>
       <AppBar position="sticky">
@@ -95,10 +106,13 @@ const HeaderBar = () => {
           >
             <Menu />
           </IconButton>
-          <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant="h6" sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
             <img src="/assets/m-logo.png" height={20} style={{ marginTop: 1, marginRight: -2 }} />
             um App
           </Typography>
+          <IconButton onClick={handleChangeModeClick}>
+            {theme == 'light' ? <DarkMode /> : <LightMode />}
+          </IconButton>
         </Toolbar>
       </AppBar>
 
