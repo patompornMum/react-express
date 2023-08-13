@@ -20,7 +20,7 @@ import {
   Typography
 } from '@mui/material';
 
-import { blue } from '@mui/material/colors';
+import { blue, green, red } from '@mui/material/colors';
 import { Link } from 'react-router-dom';
 
 import { useEffect, useState } from 'react';
@@ -151,7 +151,7 @@ const Feed = () => {
                         <>
                           <IconButton
                             sx={{
-                              color: row.like_status ? 'red' : ''
+                              color: row.like_status ? red[600] : ''
                             }}
                             onClick={() => { handleClickFavorite(row.id, index) }}
                           >
@@ -171,7 +171,7 @@ const Feed = () => {
                             component={Link}
                             to={`/feed/edit/${row.id}`}
                           >
-                            <BorderColorTwoTone sx={{ color: 'green' }} />
+                            <BorderColorTwoTone sx={{ color: green[700] }} />
                           </IconButton>
                         )}
                       </Stack>
@@ -189,7 +189,7 @@ const Feed = () => {
             variant="outlined"
             sx={{ borderRadius: 4, position: 'sticky', top: '80px' }}
           >
-            <CardHeader subheader="Tools" />
+            <CardHeader subheader="Tools" sx={{ borderBottom: '1px solid #e4e4e4' }} />
             <CardContent>
               <ToggleButtonGroup
                 orientation="vertical"
@@ -198,17 +198,27 @@ const Feed = () => {
                 size="small"
                 fullWidth={true}
                 onChange={handleChangeFeedType}
+                sx={{
+                  '& .MuiButtonBase-root': {
+                    '&.Mui-selected': {
+                      backgroundColor: blue[50]
+                    },
+                    // ':hover': {
+                    //   backgroundColor: 'red'
+                    // }
+                  }
+                }}
               >
                 <ToggleButton value="feed" sx={{ justifyContent: 'start' }}>
-                  <FeedTwoTone />
+                  <FeedTwoTone sx={{ color: blue[800] }} />
                   <Typography paddingX={1}>Feed</Typography>
                 </ToggleButton>
                 <ToggleButton value="favorite" sx={{ justifyContent: 'start' }}>
-                  <FavoriteTwoTone />
+                  <FavoriteTwoTone sx={{ color: red[600] }} />
                   <Typography paddingX={1}>FAVORITE</Typography>
                 </ToggleButton>
                 <ToggleButton value="myFeed" sx={{ justifyContent: 'start' }}>
-                  <ContactPageTwoTone />
+                  <ContactPageTwoTone sx={{ color: green[800] }} />
                   <Typography paddingX={1}>MY FEED</Typography>
                 </ToggleButton>
               </ToggleButtonGroup>

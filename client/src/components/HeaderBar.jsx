@@ -18,6 +18,7 @@ import { Menu, Mail, MoveToInbox, Feed, People, Logout } from '@mui/icons-materi
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/userSlice';
+import { blue } from '@mui/material/colors';
 
 const pages = [
   {
@@ -55,7 +56,7 @@ const HeaderBar = () => {
   const location = useLocation();
   useEffect(() => {
     let pathName = location.pathname;
-    if(pathName.startsWith('/feed')){
+    if (pathName.startsWith('/feed')) {
       pathName = '/feed'
     }
     setActiveItem(pathName)
@@ -111,7 +112,10 @@ const HeaderBar = () => {
                 to={page.to}
                 sx={{
                   color: 'black',
-                  display: (page.role && roleUser != page.role) ? 'none' : ''
+                  display: (page.role && roleUser != page.role) ? 'none' : '',
+                  '& .MuiButtonBase-root.Mui-selected': {
+                    backgroundColor:blue[50]
+                  },
                 }}
                 // onClick={() => handleItemClick(page.activeTo??page.to)}
                 onClick={() => {
