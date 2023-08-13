@@ -95,8 +95,9 @@ const HeaderBar = () => {
           >
             <Menu />
           </IconButton>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            MyApp
+          <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center' }}>
+            <img src="/assets/m-logo.png" height={20} style={{ marginTop: 1, marginRight: -2 }} />
+            um App
           </Typography>
         </Toolbar>
       </AppBar>
@@ -114,7 +115,7 @@ const HeaderBar = () => {
                   color: 'black',
                   display: (page.role && roleUser != page.role) ? 'none' : '',
                   '& .MuiButtonBase-root.Mui-selected': {
-                    backgroundColor:blue[50]
+                    backgroundColor: blue[50]
                   },
                 }}
                 // onClick={() => handleItemClick(page.activeTo??page.to)}
