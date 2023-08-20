@@ -11,6 +11,9 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
+// Components
+import DialogConfirmDel from '../../DialogConfirmDel';
+
 //React Toastify
 import { toast } from 'react-toastify';
 
@@ -22,9 +25,13 @@ import { Delete } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 
 export default function UserManage() {
+  //state
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  //state delete user
+  const [modalConfirmOpen, setModalConfirmOpen] = useState(false);
+  const [deleteData, setDeleteData] = useState({});
 
   //redux
   const { user: reduxUser } = useSelector((state) => ({ ...state }));
@@ -45,7 +52,7 @@ export default function UserManage() {
 
   const handleChangeStatus = async (event, id) => {
     const status = (event.target.checked) ? 'enable' : 'disable';
-    
+
     await changeStatus(token, id, { status: status })
       .then((res) => {
         toast.success(res.data.msg)
@@ -54,10 +61,25 @@ export default function UserManage() {
       .catch((err) => console.log(err))
   };
 
-  const handleDeleteUser = async (id) => {
-    console.log(`Delete ${id}`);
-    await deleteUser(token, id)
+  const openModalConfirmDelete = (dataUser) => {
+    setModalConfirmOpen(true)
+    setDeleteData(dataUser)
+  }
+
+  // const handleDeleteUser = async (id) => {
+  //   console.log(`Delete ${id}`);
+  //   await deleteUser(token, id)
+  //     .then((res) => {
+  //       toast.success(res.data.msg)
+  //       loadDataUser(token)
+  //     })
+  //     .catch((err) => console.log(err))
+  // }
+  const serviceDeleteUser = async () => {
+    let deleteId = deleteData?.id;
+    await deleteUser(token, deleteId)
       .then((res) => {
+        setModalConfirmOpen(false)
         toast.success(res.data.msg)
         loadDataUser(token)
       })
@@ -112,7 +134,7 @@ export default function UserManage() {
                           variant="outlined"
                           color="error"
                           startIcon={<Delete />}
-                          onClick={() => handleDeleteUser(item.id)}
+                          onClick={() => openModalConfirmDelete(item)}
                         >
                           Delete
                         </Button>
@@ -133,6 +155,14 @@ export default function UserManage() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+
+      <DialogConfirmDel
+        open={modalConfirmOpen}
+        closeDialog={() => setModalConfirmOpen(false)}
+        title={`Are you sure Delete?`}
+        desc={`Delete Username : ${deleteData?.username}`}
+        deleteFunction={serviceDeleteUser}
+      />
     </Container>
   );
 }
