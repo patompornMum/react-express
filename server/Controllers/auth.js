@@ -44,19 +44,12 @@ exports.login = async (req, res) => {
         //check Password
         const comparePassword = await bcrypt.compare(password, user.password);
         if (comparePassword) {
-
-            //check status enable, disable
-            if (user.status != 'enable') {
-                res.status(401).json({ status: 'error', msg: 'user disable !' })
-                return 
-            }
-
             // const token = jwt.sign(
             //     { id: user.id, username: user.username, role: user.role },
             //     jwt_secret,
             //     { expiresIn: '30 days' }
             // );
-
+            
             //Expire 1 Day
             const expToken = Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 1);
             const token = jwt.sign(
@@ -66,7 +59,7 @@ exports.login = async (req, res) => {
                 },
                 jwt_secret
             );
-            res.status(200).json({ status: 'ok', msg: 'login success !', token: token });
+            res.status(200).json({ status: 'ok', msg: 'login success !', token: token});
             // const userInfo = {
             //     id: user.id,
             //     username: user.username,
@@ -92,17 +85,17 @@ exports.tokenInfo = async (req, res) => {
         }
 
         // const decoded = jwt.verify(bearerToken, jwt_secret)
-        const decoded = jwt.verify(bearerToken, jwt_secret, function (err, decoded) {
-            if (err) {
-                res.status(500).json({ status: 'error', msg: err.message ?? 'Token Error' });
-                return
+        const decoded = jwt.verify(bearerToken, jwt_secret, function(err, decoded) {
+            if(err){
+                res.status(500).json({ status: 'error', msg: err.message ?? 'Token Error'});
+                return 
             }
             return decoded
         });
 
         // console.log(decoded);
         return res.status(200).json(decoded);
-    } catch (err) {
+    } catch (err) { 
         // console.log(err.message);
         console.log(err)
 

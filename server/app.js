@@ -13,9 +13,6 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//set route public
-app.use('/public', express.static('public'))
-
 // //route
 // const initailRoute = require('./src/route');
 // app.use(initailRoute);
@@ -25,7 +22,7 @@ const { readdirSync } = require('fs');
 
 app.get('/', async (req, res) => {
     // res.send('Hello world')
-    res.json({ data: 'Hello Server' });
+    res.json({ data: 'Hello world' });
 });
 
 readdirSync('./Routes')

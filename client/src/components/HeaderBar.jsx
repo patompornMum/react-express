@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from 'react';
-
-import { DarkMode, Feed, LightMode, Logout, Menu, People } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import {
   AppBar,
-  Box,
-  Drawer,
+  Toolbar,
   IconButton,
+  Typography,
+  Drawer,
   List,
   ListItem,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
-  Toolbar,
-  Typography,
+  ListItemButton,
+  Box,
 } from '@mui/material';
-import { blue } from '@mui/material/colors';
-import { Link, useLocation } from 'react-router-dom';
+import { Menu, Mail, MoveToInbox, Feed, People, Logout } from '@mui/icons-material';
 
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { setModeDark, setModeLight } from '../store/themeSlice';
 import { logout } from '../store/userSlice';
 
 const pages = [
@@ -38,7 +35,7 @@ const pages = [
     title: 'Logout',
     icon: <Logout />,
     to: '#'
-  },
+  }
   // {
   //   title: "Mail 1",
   //   icon: <Mail />,
@@ -55,23 +52,13 @@ const pages = [
 
 const HeaderBar = () => {
 
-  const location = useLocation();
-  useEffect(() => {
-    let pathName = location.pathname;
-    if (pathName.startsWith('/feed')) {
-      pathName = '/feed'
-    }
-    setActiveItem(pathName)
-  }, [location]);
-
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => ({ ...state }));
-  const { theme } = useSelector((state) => state.theme);
   const roleUser = user.info.role ?? null;
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState(location.pathname);
+  const [activeItem, setActiveItem] = useState(window.location.pathname);
 
   const toggleDrawer = () => {
     setDrawerOpen(!isDrawerOpen);
@@ -86,14 +73,6 @@ const HeaderBar = () => {
     dispatch(logout());
   }
 
-  const handleChangeModeClick = () => {
-    if (theme == 'dark') {
-      dispatch(setModeLight());
-    } else {
-      dispatch(setModeDark());
-    }
-  }
-
   return (
     <>
       <AppBar position="sticky">
@@ -106,13 +85,9 @@ const HeaderBar = () => {
           >
             <Menu />
           </IconButton>
-          <Typography variant="h6" sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
-            <img src="/assets/m-logo.png" height={20} style={{ marginTop: 1, marginRight: -2 }} />
-            um App
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            MyApp
           </Typography>
-          <IconButton onClick={handleChangeModeClick}>
-            {theme == 'light' ? <DarkMode /> : <LightMode />}
-          </IconButton>
         </Toolbar>
       </AppBar>
 
@@ -127,16 +102,13 @@ const HeaderBar = () => {
                 to={page.to}
                 sx={{
                   color: 'black',
-                  display: (page.role && roleUser != page.role) ? 'none' : '',
-                  '& .MuiButtonBase-root.Mui-selected': {
-                    backgroundColor: blue[50]
-                  },
+                  display: (page.role && roleUser != page.role) ? 'none' : ''
                 }}
                 // onClick={() => handleItemClick(page.activeTo??page.to)}
                 onClick={() => {
                   page.title == 'Logout'
                     ? handleLogoutClick()
-                    : handleItemClick(page.to)
+                    : handleItemClick(page.activeTo ?? page.to)
                 }}
               >
                 <ListItemButton selected={activeItem === page.to}>

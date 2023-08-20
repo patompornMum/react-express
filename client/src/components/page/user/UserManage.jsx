@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import { Button, Container, Switch } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,13 +9,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { Button, Container } from '@mui/material';
 
 //service
-import { changeStatus, deleteUser, list } from '../../../services/user';
+import { deleteUser, list } from '../../../services/user';
 
 //redux
-import { Delete } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+import { Delete } from '@mui/icons-material';
 
 export default function UserManage() {
   const [data, setData] = useState([]);
@@ -40,16 +40,6 @@ export default function UserManage() {
     setPage(0);
   };
 
-  const handleChangeStatus = async (event, id) => {
-    const status = (event.target.checked) ? 'enable' : 'disable';
-    await changeStatus(token, id, { status: status })
-      .then((res) => {
-        // console.log(res)
-        alert(res.data.msg)
-      })
-      .catch((err) => console.log(err))
-  };
-
   const handleDeleteUser = async (id) => {
     console.log(`Delete ${id}`);
     await deleteUser(token, id)
@@ -65,7 +55,6 @@ export default function UserManage() {
     await list(token)
       .then((res) => {
         setData(res.data)
-        console.log(res)
       })
       .catch((err) => console.log(err))
   }
@@ -79,7 +68,6 @@ export default function UserManage() {
               <TableRow>
                 <TableCell>Username</TableCell>
                 <TableCell>Role</TableCell>
-                <TableCell>Status</TableCell>
                 <TableCell>Tool</TableCell>
               </TableRow>
             </TableHead>
@@ -94,13 +82,6 @@ export default function UserManage() {
                       </TableCell>
                       <TableCell>
                         {item.role}
-                      </TableCell>
-                      <TableCell>
-                        <Switch
-                          // checked={true}
-                          defaultChecked={item.status === 'enable'}
-                          onChange={(event) => handleChangeStatus(event, item.id)}
-                        />
                       </TableCell>
                       <TableCell>
                         <Button

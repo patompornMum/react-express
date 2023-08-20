@@ -8,12 +8,6 @@ export const list = async (token) => {
     });
 }
 
-export const changeStatus = async (token, id, data) => {
-    return await axios.put(`${server_api_url}/user/changeStatus/${id}`, data, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
-}
-
 export const deleteUser = async (token, id) => {
     return await axios.delete(`${server_api_url}/user/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
