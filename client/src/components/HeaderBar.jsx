@@ -21,6 +21,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModeDark, setModeLight } from '../store/themeSlice';
 import { logout } from '../store/userSlice';
+import { useTheme } from '@emotion/react';
 
 const pages = [
   {
@@ -69,6 +70,8 @@ const HeaderBar = () => {
   const { user } = useSelector((state) => ({ ...state }));
   const { theme } = useSelector((state) => state.theme);
   const roleUser = user.info.role ?? null;
+
+  const usetheme = useTheme();
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(location.pathname);
@@ -126,10 +129,11 @@ const HeaderBar = () => {
                 component={Link}
                 to={page.to}
                 sx={{
-                  color: 'black',
+                  // color: 'black',
+                  color: usetheme.palette.text.primary,
                   display: (page.role && roleUser != page.role) ? 'none' : '',
                   '& .MuiButtonBase-root.Mui-selected': {
-                    backgroundColor: blue[50]
+                    backgroundColor: usetheme.palette.activeColor
                   },
                 }}
                 // onClick={() => handleItemClick(page.activeTo??page.to)}
@@ -143,7 +147,7 @@ const HeaderBar = () => {
                   <ListItemIcon>
                     {page.icon}
                   </ListItemIcon>
-                  <ListItemText primary={page.title}/>
+                  <ListItemText primary={page.title} />
                 </ListItemButton>
               </ListItem>
             ))}

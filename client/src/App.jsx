@@ -1,6 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
 
+//Theme
+import { darkTheme, lightTheme } from "./theme/theme";
+
 //Page
 import Notfound404 from "./components/page/Notfound404";
 import Login from './components/page/auth/Login';
@@ -17,40 +20,14 @@ import UpdateFeed from "./components/page/feed/EditFeed";
 import MainLayout from "./layouts/MainLayout";
 
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 
 //redux
 import { useSelector } from 'react-redux';
-import { red } from "@mui/material/colors";
 
 function App() {
 
   const { theme } = useSelector((state) => state.theme);
-
-  const darkThemeOriginal = createTheme({
-    palette: {
-      mode: theme
-    },
-  });
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-      // primary: red,
-      activeColor:'#3d739a'
-    },
-  });
-
-  const lightTheme = createTheme({
-    palette: {
-      mode: 'light',
-      // primary: {
-      //   main: '#33BBC5'
-      // },
-      activeColor:'#33BBC5'
-    },
-  });
-
 
   return (
     <ThemeProvider theme={(theme == 'dark') ? darkTheme : lightTheme}>

@@ -103,7 +103,6 @@ const Feed = () => {
   }
 
   const usetheme = useTheme();
-  console.log(usetheme.palette.primary)
 
   return (
     <Container maxWidth={false} sx={{ padding: 2 }}>
@@ -205,7 +204,7 @@ const Feed = () => {
                 sx={{
                   '& .MuiButtonBase-root': {
                     '&.Mui-selected': {
-                      backgroundColor: blue[50]
+                      backgroundColor: usetheme.palette.activeColor
                     },
                     // ':hover': {
                     //   backgroundColor: 'red'
