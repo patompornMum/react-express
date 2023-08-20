@@ -42,10 +42,11 @@ export default function UserManage() {
 
   const handleChangeStatus = async (event, id) => {
     const status = (event.target.checked) ? 'enable' : 'disable';
+    
     await changeStatus(token, id, { status: status })
       .then((res) => {
-        // console.log(res)
         alert(res.data.msg)
+        loadDataUser(token);
       })
       .catch((err) => console.log(err))
   };
@@ -97,8 +98,8 @@ export default function UserManage() {
                       </TableCell>
                       <TableCell>
                         <Switch
-                          // checked={true}
-                          defaultChecked={item.status === 'enable'}
+                          checked={item.status === 'enable'}
+                          // defaultChecked={item.status === 'enable'}
                           onChange={(event) => handleChangeStatus(event, item.id)}
                         />
                       </TableCell>
