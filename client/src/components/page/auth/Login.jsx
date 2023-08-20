@@ -12,6 +12,9 @@ import { Alert, Collapse } from '@mui/material';
 
 import { Link, useNavigate } from 'react-router-dom'
 
+//React Toastify
+import { toast } from 'react-toastify';
+
 //Service
 import { login, register } from '../../../services/auth';
 
@@ -57,6 +60,7 @@ export default function SignInSide() {
       .then((res) => {
         console.log(res)
         setAlertLogin(alertBox('success', res.data.msg));
+        toast.success(res.data.msg)
 
         // dispatch(
         //   loginRedux({

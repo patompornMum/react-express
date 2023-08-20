@@ -2,6 +2,9 @@ import { Button, Card, CardContent, Container, Grid, Stack, TextField, Typograph
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+//React Toastify
+import { ToastContainer, toast } from 'react-toastify';
+
 //Service
 import { read, update } from '../../../services/feed';
 
@@ -84,7 +87,7 @@ const UpdateFeed = () => {
 
         await update(token, id, dataForm)
             .then((res) => {
-                alert('updated success')
+                toast.success('updated success')
                 navi('/feed')
             })
             .catch((err) => console.log(err))

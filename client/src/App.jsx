@@ -4,6 +4,10 @@ import './App.css';
 //Theme
 import { darkTheme, lightTheme } from "./theme/theme";
 
+// React Toastify
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 //Page
 import Notfound404 from "./components/page/Notfound404";
 import Login from './components/page/auth/Login';
@@ -32,6 +36,10 @@ function App() {
   return (
     <ThemeProvider theme={(theme == 'dark') ? darkTheme : lightTheme}>
       <CssBaseline />
+      <ToastContainer
+        theme={theme}
+        autoClose={1500}
+      />
       <BrowserRouter>
 
         <Routes>

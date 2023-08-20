@@ -1,13 +1,16 @@
-import { Box, Button, Card, CardContent, Container, Grid, Input, Stack, TextField, Typography } from '@mui/material';
+import { Button, Card, CardContent, Container, Grid, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+//React Toastify
+import { toast } from 'react-toastify';
 
 //Service
 import { create } from '../../../services/feed';
 
 //redux
-import { useSelector } from 'react-redux';
 import { ArrowBackIos } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 
 
 const NewFeed = () => {
@@ -41,7 +44,7 @@ const NewFeed = () => {
 
         await create(token, data)
             .then((res) => {
-                alert('upload success')
+                toast.success('upload success')
                 navi('/feed')
             })
             .catch((err) => console.log(err))

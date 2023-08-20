@@ -11,6 +11,9 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
+//React Toastify
+import { toast } from 'react-toastify';
+
 //service
 import { changeStatus, deleteUser, list } from '../../../services/user';
 
@@ -45,7 +48,7 @@ export default function UserManage() {
     
     await changeStatus(token, id, { status: status })
       .then((res) => {
-        alert(res.data.msg)
+        toast.success(res.data.msg)
         loadDataUser(token);
       })
       .catch((err) => console.log(err))
@@ -55,7 +58,7 @@ export default function UserManage() {
     console.log(`Delete ${id}`);
     await deleteUser(token, id)
       .then((res) => {
-        alert(res.data.msg)
+        toast.success(res.data.msg)
         loadDataUser(token)
       })
       .catch((err) => console.log(err))

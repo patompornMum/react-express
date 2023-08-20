@@ -9,6 +9,9 @@ import Typography from '@mui/material/Typography';
 
 import { Alert, Collapse } from '@mui/material';
 
+//React Toastify
+import { toast } from 'react-toastify';
+
 //icon
 import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption';
 
@@ -53,6 +56,7 @@ export default function Register() {
       .then((res) => {
         console.log(res)
         setAlertLogin(alertBox('success', res.data.msg))
+        toast.success(res.data.msg)
         setTimeout(() => navi('/login'), 1000);
       })
       .catch((err) => {
