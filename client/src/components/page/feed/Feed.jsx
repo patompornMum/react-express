@@ -117,7 +117,7 @@ const Feed = () => {
                     <CardHeader
                       avatar={
                         <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
-                          {row.created_by[0].toUpperCase()}
+                          {row.created_by && row.created_by[0].toUpperCase()}
                         </Avatar>
                       }
                       title={row.created_by}
