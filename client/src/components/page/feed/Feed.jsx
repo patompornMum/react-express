@@ -26,6 +26,9 @@ import { Link } from 'react-router-dom';
 
 import { useEffect, useState } from 'react';
 
+//date-fns
+import { format, formatDistanceToNow } from 'date-fns';
+
 //redux
 import { useSelector } from 'react-redux';
 
@@ -102,6 +105,12 @@ const Feed = () => {
     }
   }
 
+  const formatSubheaderTimeAgo = (dateTime)=>{
+    const newDate = new Date(dateTime);
+    const timeAgo = formatDistanceToNow(newDate);
+    return format(newDate,'d MMM Y HH:mm')+` (${timeAgo})`;
+  }
+
   const usetheme = useTheme();
 
   return (
@@ -121,7 +130,7 @@ const Feed = () => {
                         </Avatar>
                       }
                       title={row.created_by}
-                      subheader={row.created_at}
+                      subheader={formatSubheaderTimeAgo(row.created_at)}
                     />
                     {row.file != null && (
                       <CardMedia
