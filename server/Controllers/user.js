@@ -31,6 +31,23 @@ exports.changeStatus = async (req, res) => {
     }
 };
 
+exports.changeRole = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { role } = req.body;
+
+        await db('users').where(
+            { id: id }
+        ).update(
+            { role: role }
+        );
+        res.status(200).json({ status: 'success', msg: 'update success' });
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({ status: 'error', msg: 'Server Error' });
+    }
+}
+
 exports.deleteUser = async (req, res) => {
     try {
         const id = req.params.id;
