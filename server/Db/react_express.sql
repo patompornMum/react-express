@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 09, 2023 at 12:41 PM
+-- Generation Time: Aug 21, 2023 at 05:05 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -59,29 +59,30 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` varchar(100) NOT NULL DEFAULT 'user'
+  `role` varchar(100) NOT NULL DEFAULT 'user',
+  `status` enum('enable','disable') NOT NULL DEFAULT 'enable'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
-(1, 'admin', '$2b$10$ZJzc2ogkf5pQIT7me2DrjeCDht0SD.EviJ8oqBFollkMEUWYxB61K', 'admin'),
-(2, 'mum', '$2b$10$X7WiEJJGrebhh75Is6pveOdC1/ixgWtVLCRgBrd31K0le74I9I4qO', 'user'),
-(3, 'user', '$2b$10$aEDJbvq..7v/Y.ItLla4he7GOG3q.fL40jRy71yZVpP3C6Xj5WGTi', 'user'),
-(4, 'patomporn', '$2b$10$rUwOO6peEou4fMbF4aca2uCG49JKLUKr9VqhcfxSWyCnb9Cs7sFEG', 'user'),
-(5, 'john', '$2b$10$JMaqztlOjRQrwlKHzO1Tm.8wx68k4kpiB01lBjFWIJFV0VjKASEA6', 'user'),
-(6, 'Nadine', '$2b$10$fSyC2ziZcfhiq4m4OY1yLuBIbUWBkAedvXZarpZta/Zi/LdO1Zh6G', 'user'),
-(7, 'Ramiro', '$2b$10$qBDVZoB8xu0XxWLNccv.MeYUzaPivbu8MXz3suFwHscFrW7a24gsW', 'user'),
-(8, 'ana', '$2b$10$SmgP/jwhn5Spd45gIEnYxOxbOMUh5hIV51c54NSirBW.4lCDvQ8tm', 'user'),
-(9, 'peggy', '$2b$10$Oqhm97ZCxQWy72xpCNe1lOvZOd8Y6W/gNftBdibP8sq1g1cLWuRPK', 'user'),
-(10, 'jinny', '$2b$10$Cf.gJ.6OXgHC7q0FmDfp/eZdj8UcfPl5G7POni8JfspljhrFyTC.O', 'user'),
-(11, 'art', '$2b$10$f4RDgaBkLIUClRlY0gnXueAKkwH5VUUGj3gsMfFoln2y1Wox4LhfG', 'user'),
-(12, 'deam', '$2b$10$l3U0EEJiYGbEdTXKmd9jWuD5CyWG5hth5qRyy6qgrAssYkPgqF//C', 'user'),
-(13, 'danny', '$2b$10$ZlAjz1oVTHB1h41irVU/wugCB2JGnJVNvMHxtb0saFT6Tq/Gb0lAS', 'user'),
-(14, 'pokky', '$2b$10$tIu6Qu9udVgxWXxK3vYbV.sVvPVNuSM/X79vgp0fO.cCBtL2x0B3G', 'user'),
-(15, 'rafa', '$2b$10$F5EL2F6euFaIi.l699g1KOmk6mo320U1p85ZOpZcrZW0wCkt9JcKG', 'user');
+INSERT INTO `users` (`id`, `username`, `password`, `role`, `status`) VALUES
+(1, 'admin', '$2b$10$ZJzc2ogkf5pQIT7me2DrjeCDht0SD.EviJ8oqBFollkMEUWYxB61K', 'admin', 'enable'),
+(2, 'mum', '$2b$10$X7WiEJJGrebhh75Is6pveOdC1/ixgWtVLCRgBrd31K0le74I9I4qO', 'user', 'enable'),
+(3, 'user', '$2b$10$aEDJbvq..7v/Y.ItLla4he7GOG3q.fL40jRy71yZVpP3C6Xj5WGTi', 'user', 'enable'),
+(4, 'patomporn', '$2b$10$rUwOO6peEou4fMbF4aca2uCG49JKLUKr9VqhcfxSWyCnb9Cs7sFEG', 'user', 'enable'),
+(5, 'john', '$2b$10$JMaqztlOjRQrwlKHzO1Tm.8wx68k4kpiB01lBjFWIJFV0VjKASEA6', 'user', 'disable'),
+(6, 'Nadine', '$2b$10$fSyC2ziZcfhiq4m4OY1yLuBIbUWBkAedvXZarpZta/Zi/LdO1Zh6G', 'user', 'enable'),
+(7, 'Ramiro', '$2b$10$qBDVZoB8xu0XxWLNccv.MeYUzaPivbu8MXz3suFwHscFrW7a24gsW', 'user', 'enable'),
+(8, 'ana', '$2b$10$SmgP/jwhn5Spd45gIEnYxOxbOMUh5hIV51c54NSirBW.4lCDvQ8tm', 'user', 'enable'),
+(9, 'peggy', '$2b$10$Oqhm97ZCxQWy72xpCNe1lOvZOd8Y6W/gNftBdibP8sq1g1cLWuRPK', 'user', 'enable'),
+(10, 'jinny', '$2b$10$Cf.gJ.6OXgHC7q0FmDfp/eZdj8UcfPl5G7POni8JfspljhrFyTC.O', 'user', 'enable'),
+(11, 'art', '$2b$10$f4RDgaBkLIUClRlY0gnXueAKkwH5VUUGj3gsMfFoln2y1Wox4LhfG', 'user', 'enable'),
+(12, 'deam', '$2b$10$l3U0EEJiYGbEdTXKmd9jWuD5CyWG5hth5qRyy6qgrAssYkPgqF//C', 'user', 'enable'),
+(13, 'danny', '$2b$10$ZlAjz1oVTHB1h41irVU/wugCB2JGnJVNvMHxtb0saFT6Tq/Gb0lAS', 'user', 'enable'),
+(14, 'pokky', '$2b$10$tIu6Qu9udVgxWXxK3vYbV.sVvPVNuSM/X79vgp0fO.cCBtL2x0B3G', 'user', 'enable'),
+(15, 'rafa', '$2b$10$F5EL2F6euFaIi.l699g1KOmk6mo320U1p85ZOpZcrZW0wCkt9JcKG', 'user', 'enable');
 
 --
 -- Indexes for dumped tables
