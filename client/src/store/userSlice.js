@@ -13,7 +13,8 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       state.info = []
-      localStorage.clear()
+      // localStorage.clear()
+      localStorage.removeItem('token')
     }
   },
 });
