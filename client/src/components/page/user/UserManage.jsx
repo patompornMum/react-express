@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { Button, Container, Switch } from '@mui/material';
+import { Button, Container, FormControl, InputLabel, MenuItem, Select, Switch } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,7 +18,7 @@ import DialogConfirmDel from '../../DialogConfirmDel';
 import { toast } from 'react-toastify';
 
 //service
-import { changeStatus, deleteUser, list } from '../../../services/user';
+import { changeRole, changeStatus, deleteUser, list } from '../../../services/user';
 
 //redux
 import { Delete } from '@mui/icons-material';
@@ -60,6 +60,18 @@ export default function UserManage() {
       })
       .catch((err) => console.log(err))
   };
+
+  const handleChangeRole = async (event, id) => {
+    console.log(event.target.value, id)
+    const role = event.target.value;
+
+    await changeRole(token, id, { role: role })
+      .then((res) => {
+        toast.success(res.data.msg)
+        loadDataUser(token);
+      })
+      .catch((err) => console.log(err))
+  }
 
   const openModalConfirmDelete = (dataUser) => {
     setModalConfirmOpen(true)
@@ -118,14 +130,27 @@ export default function UserManage() {
                       <TableCell>
                         {item.username}
                       </TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         {item.role}
+                      </TableCell> */}
+                      <TableCell>
+                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                          <InputLabel id="">Role</InputLabel>
+                          <Select
+                            value={item.role}
+                            label="Role"
+                            onChange={(e) => handleChangeRole(e, item.id)}
+                          >
+                            <MenuItem value="admin">Admin</MenuItem>
+                            <MenuItem value="user">User</MenuItem>
+                          </Select>
+                        </FormControl>
                       </TableCell>
                       <TableCell>
                         <Switch
                           checked={item.status === 'enable'}
                           // defaultChecked={item.status === 'enable'}
-                          onChange={(event) => handleChangeStatus(event, item.id)}
+                          onChange={(e) => handleChangeStatus(e, item.id)}
                         />
                       </TableCell>
                       <TableCell>
