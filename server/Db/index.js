@@ -8,7 +8,7 @@ const db = knex.default({
     host: process.env.MYSQL_HOST,
     port: process.env.MYSQL_PORT,
     database: 'react_express',
-    timezone: '+00:00',
+    // timezone: '+00:00',
   },
 });
 
