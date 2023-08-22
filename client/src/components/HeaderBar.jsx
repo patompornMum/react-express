@@ -4,6 +4,7 @@ import { DarkMode, Feed, LightMode, Logout, Menu, People } from '@mui/icons-mate
 import {
   AppBar,
   Box,
+  Divider,
   Drawer,
   IconButton,
   List,
@@ -11,16 +12,17 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Stack,
   Toolbar,
   Typography,
 } from '@mui/material';
-import { blue } from '@mui/material/colors';
 import { Link, useLocation } from 'react-router-dom';
 
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { setModeDark, setModeLight } from '../store/themeSlice';
 import { logout } from '../store/userSlice';
+
 import { useTheme } from '@emotion/react';
 
 const pages = [
@@ -70,6 +72,7 @@ const HeaderBar = () => {
   const { user } = useSelector((state) => ({ ...state }));
   const { theme } = useSelector((state) => state.theme);
   const roleUser = user.info.role ?? null;
+  const nameUser = user.info.name ?? null;
 
   const usetheme = useTheme();
 
@@ -113,9 +116,20 @@ const HeaderBar = () => {
             <img src="/assets/m-logo.png" height={20} style={{ marginTop: 1, marginRight: -2 }} />
             um App
           </Typography>
-          <IconButton onClick={handleChangeModeClick}>
-            {theme == 'light' ? <DarkMode /> : <LightMode />}
-          </IconButton>
+
+          <Stack
+            direction="row"
+            divider={<Divider orientation="vertical" flexItem />}
+            spacing={{ xs: 1, md: 2 }}
+          >
+            <IconButton onClick={handleChangeModeClick}>
+              {theme == 'light' ? <DarkMode /> : <LightMode />}
+            </IconButton>
+            <Typography sx={{ alignItems: 'center', display: 'flex' }}>
+              {nameUser}
+            </Typography>
+          </Stack>
+
         </Toolbar>
       </AppBar>
 
