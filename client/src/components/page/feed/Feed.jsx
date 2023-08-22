@@ -1,6 +1,7 @@
 import { Add, BorderColorTwoTone, ContactPageTwoTone, FavoriteTwoTone, FeedTwoTone } from '@mui/icons-material';
 import {
   Avatar,
+  Badge,
   BottomNavigation,
   BottomNavigationAction,
   Box,
@@ -45,8 +46,11 @@ const Feed = () => {
 
   //redux
   const { user: reduxUser } = useSelector((state) => ({ ...state }));
+  const { socket: reduxSocket } = useSelector((state) => ({ ...state }));
   const token = reduxUser.info.token;
   const user_id = reduxUser.info.id;
+  const userOnline = reduxSocket.userOnline ?? null;
+  console.log(userOnline)
 
   useEffect(() => {
     loadDataFeed(token, feedType);
@@ -105,10 +109,10 @@ const Feed = () => {
     }
   }
 
-  const formatSubheaderTimeAgo = (dateTime)=>{
+  const formatSubheaderTimeAgo = (dateTime) => {
     const newDate = new Date(dateTime);
     const timeAgo = formatDistanceToNow(newDate);
-    return format(newDate,'d MMM Y HH:mm')+` (${timeAgo})`;
+    return format(newDate, 'd MMM Y HH:mm') + ` (${timeAgo})`;
   }
 
   const usetheme = useTheme();
@@ -125,9 +129,15 @@ const Feed = () => {
                   <Card variant="outlined" sx={{ borderRadius: 4 }}>
                     <CardHeader
                       avatar={
-                        <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
-                          {row.created_by && row.created_by[0].toUpperCase()}
-                        </Avatar>
+                        <Badge
+                          color="success"
+                          variant="dot"
+                          invisible={userOnline[row.user_id] ? false : true}
+                        >
+                          <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
+                            {row.created_by && row.created_by[0].toUpperCase()}
+                          </Avatar>
+                        </Badge>
                       }
                       title={row.created_by}
                       subheader={formatSubheaderTimeAgo(row.created_at)}
