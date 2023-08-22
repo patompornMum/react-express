@@ -48,15 +48,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-        //Route Admin
+          //Route Admin
           <Route
             element={<CheckAuth redirectPath='/login' role='admin'><MainLayout /></CheckAuth>}
           >
             <Route path="/user-manage" element={<UserManage />} />
           </Route>
 
-
-        //Route User
+          //Route User
           <Route
             element={<CheckAuth redirectPath='/login' role='user'><MainLayout /></CheckAuth>}
           >
@@ -64,13 +63,6 @@ function App() {
             <Route path="/feed/new" element={<NewFeed />} />
             <Route path="/feed/edit/:id" element={<UpdateFeed />} />
           </Route>
-
-        //ของจารสามิตร์
-          {/* <Route element={<ProtectedRoute><BackendLayout /></ProtectedRoute>}>
-          <Route path={DASHBOARD_PATH} element={<Dashboard />} />
-          <Route path={PRODUCT_PATH} element={<Product />} />
-        </Route> */}
-
         </Routes>
 
       </BrowserRouter>
