@@ -6,12 +6,19 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 //use morgan
-app.use(morgan('dev'))
+// app.use(morgan('dev'))
 //use cors *
 app.use(cors())
 //express.json => get data body type json
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//setup init socket.io
+const { createServer } = require('http');
+const initializeSocket = require('./socket');
+const httpServer = createServer(app);
+const io = initializeSocket(httpServer);
+//close init socket.io
 
 //set route public
 app.use('/public', express.static('public'))
@@ -31,6 +38,6 @@ app.get('/', async (req, res) => {
 readdirSync('./Routes')
     .map((fileName) => app.use('/api', require('./Routes/' + fileName)));
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log(`Start app listening on port ${port} ${new Date().toLocaleTimeString()}`)
 })
