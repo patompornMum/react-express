@@ -23,7 +23,7 @@ const MainLayout = () => {
     useEffect(() => {
         const socket = io(server_socket_url, {
             auth: {
-                token: 'auth token'
+                token: token
             },
             query: {
                 userId: user_id
