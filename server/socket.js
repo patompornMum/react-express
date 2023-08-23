@@ -14,13 +14,16 @@ function initializeSocket(httpServer) {
     });
 
     io.use((socket, next) => {
-        const token = socket.handshake.auth.token
-        // console.log(token)
-        if (token != 'auth token') {
+        try {
+            const token = socket.handshake.auth.token
+
+            const decoded = jwt.verify(token, jwt_secret)
+            
+            next();
+        } catch (error) {
+            console.log('err')
             socket.disconnect(true);
             return next(new Error('Connection not allowed'));
-        } else {
-            next();
         }
     }).on('connection', (socket) => {
         const { userId } = socket.handshake.query;
