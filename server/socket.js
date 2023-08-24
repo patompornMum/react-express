@@ -4,10 +4,11 @@ const jwt = require('jsonwebtoken')
 const jwt_secret = process.env.JWT_SECRET_KEY;
 
 let userOnline = {};
+let io = null;
 
 function initializeSocket(httpServer) {
 
-    const io = new Server(httpServer, {
+    io = new Server(httpServer, {
         cors: {
             origin: "*"
         }
@@ -18,7 +19,7 @@ function initializeSocket(httpServer) {
             const token = socket.handshake.auth.token
 
             const decoded = jwt.verify(token, jwt_secret)
-            
+
             next();
         } catch (error) {
             console.log('err')
@@ -43,8 +44,11 @@ function initializeSocket(httpServer) {
             io.emit('userOnline', userOnline)
         })
     });
-
     return io;
 }
 
-module.exports = initializeSocket;
+function getIO() {
+    return io;
+}
+
+module.exports = { initializeSocket, getIO };

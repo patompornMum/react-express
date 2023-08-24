@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //setup init socket.io
 const { createServer } = require('http');
-const initializeSocket = require('./socket');
+const { initializeSocket } = require('./socket');
 const httpServer = createServer(app);
 const io = initializeSocket(httpServer);
 //close init socket.io
