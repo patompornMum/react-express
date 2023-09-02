@@ -15,6 +15,7 @@ import {
   Fab,
   Grid,
   IconButton,
+  Skeleton,
   Stack,
   ToggleButton,
   ToggleButtonGroup,
@@ -43,6 +44,7 @@ const server_public_url = import.meta.env.VITE_SERVER_PUBLIC_URL ?? null;
 const Feed = () => {
   const [data, setData] = useState([]);
   const [feedType, setFeedType] = useState('feed');
+  const [loading, setLoading] = useState(true);
 
   //redux
   const { user: reduxUser } = useSelector((state) => ({ ...state }));
@@ -59,6 +61,7 @@ const Feed = () => {
   const loadDataFeed = async (token, feedType) => {
     console.log('LoadData')
     console.log(feedType)
+    setLoading(true);
 
     const respData = await list(token)
       .then((res) => res.data)
@@ -75,6 +78,10 @@ const Feed = () => {
     } else {
       setData(respData)
     }
+
+    setTimeout(() => {
+      setLoading(false)
+    }, 200)
   }
 
   const handleClickFavorite = async (feedId, feedIndex) => {
@@ -121,89 +128,145 @@ const Feed = () => {
     <Container maxWidth={false} sx={{ padding: 2 }}>
       <Grid container spacing={2} paddingBottom={{ xs: 10, md: 2 }}>
         <Grid item xs={0} md={3} display={{ xs: 'none', md: 'block' }}> </Grid>
-        <Grid item xs={0} md={6}>
-          <Grid container spacing={{ xs: 3, md: 4 }}>
-            {data.map((row, index) => {
-              return (
+        <Grid item xs={12} md={6}>
+
+          {(loading) ?
+            <Grid container spacing={{ xs: 3, md: 4 }}>
+              {[1, 2].map((index) => (
                 <Grid item xs={12} md={12} key={index}>
                   <Card variant="outlined" sx={{ borderRadius: 4 }}>
                     <CardHeader
                       avatar={
-                        <Badge
-                          color="success"
-                          variant="dot"
-                          invisible={userOnline[row.user_id] ? false : true}
-                        >
-                          <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
-                            {row.created_by && row.created_by[0].toUpperCase()}
-                          </Avatar>
-                        </Badge>
+                        <Skeleton
+                          animation="wave"
+                          variant="circular"
+                          width={40}
+                          height={40}
+                        />
                       }
-                      title={row.created_by}
-                      subheader={formatSubheaderTimeAgo(row.created_at)}
+                      title={
+                        <Skeleton
+                          animation="wave"
+                          height={10}
+                          width="10%"
+                          style={{ marginBottom: 6 }}
+                        />
+                      }
+                      subheader={
+                        <Skeleton
+                          animation="wave"
+                          height={10}
+                          width="20%"
+                        />
+                      }
                     />
-                    {row.file != null && (
-                      <CardMedia
-                        component="img"
-                        // height="194"
-                        image={`${server_public_url}/uploads/${row.file}`}
-                        alt="Image"
-                        sx={{ maxHeight: { xs: '300px', md: '700px' } }}
-                      />
-                    )}
+                    <Skeleton
+                      sx={{ height: { xs: '300px', md: '500px' } }}
+                      animation="wave"
+                      variant="rectangular"
+                    />
                     <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {row.title}
-                      </Typography>
-                      <Typography
-                        component="pre"
-                        variant="body2"
-                        color="text.secondary"
-                        style={{ whiteSpace: 'pre-wrap' }}
-                      >
-                        {row.content}
-                      </Typography>
+                      <Skeleton
+                        animation="wave"
+                        height={15}
+                        width="40%"
+                        style={{ marginBottom: 6 }}
+                      />
+                      <Skeleton
+                        animation="wave"
+                        height={15}
+                        width="40%"
+                      />
                     </CardContent>
-                    <CardActions sx={{ borderTop: '1px solid #e4e4e4' }}>
-                      <Stack
-                        direction="row"
-                        divider={<Divider orientation="vertical" flexItem />}
-                        spacing={2}
-                      >
-                        <>
-                          <IconButton
-                            sx={{
-                              color: row.like_status ? red[600] : ''
-                            }}
-                            onClick={() => { handleClickFavorite(row.id, index) }}
-                          >
-                            <FavoriteTwoTone />
-                          </IconButton>
-                          {row.likes > 0 &&
-                            <Typography
-                              paddingY={1}
-                              style={{ marginLeft: 0 }}
-                            >
-                              {row.likes} Likes
-                            </Typography>
-                          }
-                        </>
-                        {row.user_id == user_id && (
-                          <IconButton
-                            component={Link}
-                            to={`/feed/edit/${row.id}`}
-                          >
-                            <BorderColorTwoTone sx={{ color: green[700] }} />
-                          </IconButton>
-                        )}
-                      </Stack>
-
-                    </CardActions>
                   </Card>
+                  {/* <Skeleton sx={{ height: 190 }} animation="wave" variant="rectangular" /> */}
                 </Grid>
-              )
-            })}
-          </Grid>
+              ))}
+            </Grid>
+            : <Grid container spacing={{ xs: 3, md: 4 }}>
+              {data.map((row, index) => {
+                return (
+                  <Grid item xs={12} md={12} key={index}>
+                    <Card variant="outlined" sx={{ borderRadius: 4 }}>
+                      <CardHeader
+                        avatar={
+                          <Badge
+                            color="success"
+                            variant="dot"
+                            invisible={userOnline[row.user_id] ? false : true}
+                          >
+                            <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
+                              {row.created_by && row.created_by[0].toUpperCase()}
+                            </Avatar>
+                          </Badge>
+                        }
+                        title={row.created_by}
+                        subheader={formatSubheaderTimeAgo(row.created_at)}
+                      />
+                      {row.file != null && (
+                        <CardMedia
+                          component="img"
+                          // height="194"
+                          image={`${server_public_url}/uploads/${row.file}`}
+                          alt="Image"
+                          sx={{ maxHeight: { xs: '300px', md: '700px' } }}
+                        />
+                      )}
+                      <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {row.title}
+                        </Typography>
+                        <Typography
+                          component="pre"
+                          variant="body2"
+                          color="text.secondary"
+                          style={{ whiteSpace: 'pre-wrap' }}
+                        >
+                          {row.content}
+                        </Typography>
+                      </CardContent>
+                      <CardActions sx={{ borderTop: '1px solid #e4e4e4' }}>
+                        <Stack
+                          direction="row"
+                          divider={<Divider orientation="vertical" flexItem />}
+                          spacing={2}
+                        >
+                          <>
+                            <IconButton
+                              sx={{
+                                color: row.like_status ? red[600] : ''
+                              }}
+                              onClick={() => { handleClickFavorite(row.id, index) }}
+                            >
+                              <FavoriteTwoTone />
+                            </IconButton>
+                            {row.likes > 0 &&
+                              <Typography
+                                paddingY={1}
+                                style={{ marginLeft: 0 }}
+                              >
+                                {row.likes} Likes
+                              </Typography>
+                            }
+                          </>
+                          {row.user_id == user_id && (
+                            <IconButton
+                              component={Link}
+                              to={`/feed/edit/${row.id}`}
+                            >
+                              <BorderColorTwoTone sx={{ color: green[700] }} />
+                            </IconButton>
+                          )}
+                        </Stack>
+
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                )
+              })}
+            </Grid>
+          }
+
         </Grid>
         {/* PC RIGHT BAR */}
         <Grid item xs={0} md={3} display={{ xs: 'none', md: 'block' }}>
