@@ -3,7 +3,7 @@ const db = require('../Db');
 exports.list = async (req, res) => {
     try {
 
-        const user = await db('users').select('id', 'username', 'role', 'status');
+        const user = await db('users').select('id', 'username', 'role', 'status', 'created_at');
         res.status(200).json(user);
 
     } catch (err) {

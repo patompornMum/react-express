@@ -6,7 +6,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 //use morgan
-// app.use(morgan('dev'))
+app.use(morgan('dev'))
 //use cors *
 app.use(cors())
 //express.json => get data body type json
