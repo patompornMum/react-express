@@ -1,20 +1,25 @@
   version: '3.9'
 
+  networks:
+    mynetwork:
+      driver: bridge
+
   services:
-    # db:
-    #   image: mysql:latest
-    #   environment:
-    #     MYSQL_ROOT_PASSWORD: bluestone88
-    #     MYSQL_DATABASE: react_express
-    #     MYSQL_USER: blue
-    #     MYSQL_PASSWORD: bluestone88
-    #   ports:
-    #     - "3306:3306"
-    #   volumes:
-    #     - ./init.sql/:/docker-entrypoint-initdb.d/init.sql
-    #   command: --default-authentication-plugin=mysql_native_password
-    #   networks:
-    #     - mynetwork
+    db:
+      image: mysql:latest
+      environment:
+        MYSQL_ROOT_PASSWORD: bluestone88
+        MYSQL_DATABASE: react_express
+        MYSQL_USER: blue
+        MYSQL_PASSWORD: bluestone88
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./init.sql/:/docker-entrypoint-initdb.d/init.sql
+      command: --default-authentication-plugin=mysql_native_password
+      # command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
+      networks:
+        - mynetwork
       
     api: 
       build: 
@@ -22,8 +27,8 @@
         dockerfile: Dockerfile
       ports:
         - "3000:3000"
-      # depends_on: 
-      #   - db
+      depends_on: 
+        - db
       environment:
         TZ: Asia/Bangkok
         PORT: 3000
@@ -41,11 +46,8 @@
     #     context: ./client
     #     dockerfile: Dockerfile
     #   ports:
-    #     - "3001:3000"
+    #     # public:container port
+    #     - "3001:3001"
     #   networks:
     #     - mynetwork
-
-  networks:
-    mynetwork:
-      driver: bridge
         
