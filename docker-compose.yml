@@ -7,7 +7,10 @@
   services:
     db:
       image: mysql:latest
+      container_name: db
+      restart: always
       environment:
+        TZ: Asia/Bangkok
         MYSQL_ROOT_PASSWORD: bluestone88
         MYSQL_DATABASE: react_express
         MYSQL_USER: blue
@@ -16,7 +19,7 @@
         - "3306:3306"
       volumes:
         - ./init.sql/:/docker-entrypoint-initdb.d/init.sql
-      command: --default-authentication-plugin=mysql_native_password
+      command: --default-authentication-plugin=caching_sha2_password
       # command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
       networks:
         - mynetwork
@@ -25,6 +28,8 @@
       build: 
         context: ./server
         dockerfile: Dockerfile
+      container_name: api
+      restart: always
       ports:
         - "3000:3000"
       depends_on: 
@@ -41,13 +46,15 @@
       networks:
         - mynetwork
     
-    # web:
-    #   build: 
-    #     context: ./client
-    #     dockerfile: Dockerfile
-    #   ports:
-    #     # public:container port
-    #     - "3001:3001"
-    #   networks:
-    #     - mynetwork
+    web:
+      build: 
+        context: ./client
+        dockerfile: Dockerfile
+      container_name: web
+      restart: always
+      ports:
+        # public:container port
+        - "3001:3001"
+      networks:
+        - mynetwork
         
