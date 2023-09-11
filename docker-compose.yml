@@ -21,6 +21,11 @@
         - ./init.sql/:/docker-entrypoint-initdb.d/init.sql
       command: --default-authentication-plugin=caching_sha2_password
       # command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
+      logging:
+        driver: json-file
+        options:
+          max-size: 10m
+          max-file: "1"
       networks:
         - mynetwork
       
@@ -43,6 +48,11 @@
         MYSQL_PASSWORD: bluestone88
         MYSQL_PORT: 3306
         BCRYPT_SALT: 10
+      logging:
+        driver: json-file
+        options:
+          max-size: 10m
+          max-file: "1"
       networks:
         - mynetwork
     
@@ -55,6 +65,10 @@
       ports:
         # public:container port
         - "3001:3001"
+      logging:
+        driver: json-file
+        options:
+          max-size: 10m
+          max-file: "1"
       networks:
         - mynetwork
-        
