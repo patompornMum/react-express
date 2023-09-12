@@ -19,7 +19,7 @@
         - "3306:3306"
       volumes:
         - ./init.sql/:/docker-entrypoint-initdb.d/init.sql
-        - ./mysqldb:/var/lib/mysql
+        # - ./mysqldb:/var/lib/mysql
       command: --default-authentication-plugin=caching_sha2_password
       # command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
       logging:
@@ -40,15 +40,17 @@
         - "3000:3000"
       depends_on: 
         - db
-      environment:
-        TZ: Asia/Bangkok
-        PORT: 3000
-        JWT_SECRET_KEY: patomporn
-        MYSQL_HOST: db
-        MYSQL_USER: blue
-        MYSQL_PASSWORD: bluestone88
-        MYSQL_PORT: 3306
-        BCRYPT_SALT: 10
+      env_file:
+        - ./server/.ENV.prod
+      # environment:
+      #   TZ: Asia/Bangkok
+      #   PORT: 3000
+      #   JWT_SECRET_KEY: patomporn
+      #   MYSQL_HOST: db
+      #   MYSQL_USER: blue
+      #   MYSQL_PASSWORD: bluestone88
+      #   MYSQL_PORT: 3306
+      #   BCRYPT_SALT: 10
       logging:
         driver: json-file
         options:

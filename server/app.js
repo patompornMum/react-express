@@ -32,7 +32,8 @@ const { readdirSync } = require('fs');
 
 app.get('/', async (req, res) => {
     // res.send('Hello world')
-    res.json({ data: 'Hello Server' });
+    const mode = process.env.MODE ?? null;
+    res.json({ data: 'Hello Server', mode: mode });
 });
 
 readdirSync('./Routes')
