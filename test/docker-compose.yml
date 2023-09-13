@@ -1,0 +1,15 @@
+  version: '3.9'
+
+  networks:
+    mytest:
+      driver: bridge
+
+  services:
+    # Nginx Web Server
+    nginx_test:
+      image: nginx:latest
+      container_name: nginx_test
+      ports:
+        - 80:80
+      networks:
+        - mytest
