@@ -68,8 +68,8 @@
       ports:
         # public:container port
         - "3001:3001"
-      depends_on: 
-        - api
+      # depends_on: 
+      #   - api
       logging:
         driver: json-file
         options:
