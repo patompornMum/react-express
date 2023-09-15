@@ -55,3 +55,15 @@ systemctl reload nginx
 
 <!-- check status nginx -->
 systemctl status nginx
+
+
+
+<!-- create certbot (ssl) -->
+sudo apt install certbot python3-certbot-nginx
+certbot --nginx -d app.mumpatomporn.xyz -d www.app.mumpatomporn.xyz -d server.mumpatomporn.xyz -d www.server.mumpatomporn.xyz --register-unsafely-without-email
+
+<!-- confirm cret -->
+<!-- 1)Agree/ Cancel -->
+A
+<!-- 2) Noredirect(1) / Redirect(2) -->
+2
