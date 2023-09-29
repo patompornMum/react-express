@@ -67,3 +67,19 @@ certbot --nginx -d app.mumpatomporn.xyz -d www.app.mumpatomporn.xyz -d server.mu
 A
 <!-- 2) Noredirect(1) / Redirect(2) -->
 2
+
+<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+
+<!-- แถม) กรณีจะใช้ default ด้วย (html) /var/www/html -->
+server {
+    server_name mumpatomporn.xyz www.mumpatomporn.xyz;
+    
+    root /var/www/html;
+    index index.html inedx.nginx-debian.html;
+
+    location /  {
+        root /var/www/html;
+    }
+}
+
+sudo ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/
