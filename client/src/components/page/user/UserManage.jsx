@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { Button, Container, FormControl, InputLabel, MenuItem, Select, Switch } from '@mui/material';
+import { Button, Container, FormControl, IconButton, InputLabel, MenuItem, Select, Switch } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -21,8 +21,11 @@ import { toast } from 'react-toastify';
 import { changeRole, changeStatus, deleteUser, list } from '../../../services/user';
 
 //redux
-import { Delete } from '@mui/icons-material';
+import { CircleTwoTone, Delete } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+
+//date-fns
+import { format } from 'date-fns';
 
 export default function UserManage() {
   //state
@@ -35,7 +38,10 @@ export default function UserManage() {
 
   //redux
   const { user: reduxUser } = useSelector((state) => ({ ...state }));
+  const { socket: reduxSocket } = useSelector((state) => ({ ...state }));
   const token = reduxUser.info.token;
+  const userOnline = reduxSocket.userOnline ?? null;
+  console.log(userOnline)
 
   useEffect(() => {
     loadDataUser(token);
@@ -116,8 +122,10 @@ export default function UserManage() {
             <TableHead>
               <TableRow>
                 <TableCell>Username</TableCell>
+                <TableCell>Online</TableCell>
                 <TableCell>Role</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Created At</TableCell>
                 <TableCell>Tool</TableCell>
               </TableRow>
             </TableHead>
@@ -130,9 +138,13 @@ export default function UserManage() {
                       <TableCell>
                         {item.username}
                       </TableCell>
-                      {/* <TableCell>
-                        {item.role}
-                      </TableCell> */}
+                      <TableCell>
+                        <IconButton>
+                          <CircleTwoTone
+                            color={userOnline[item.id] ? 'success' : 'error'}
+                          />
+                        </IconButton>
+                      </TableCell>
                       <TableCell>
                         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                           <InputLabel id="">Role</InputLabel>
@@ -152,6 +164,9 @@ export default function UserManage() {
                           // defaultChecked={item.status === 'enable'}
                           onChange={(e) => handleChangeStatus(e, item.id)}
                         />
+                      </TableCell>
+                      <TableCell>
+                        {format(new Date(item.created_at), 'd MMM Y')}
                       </TableCell>
                       <TableCell>
                         <Button

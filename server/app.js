@@ -13,6 +13,13 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//setup init socket.io
+const { createServer } = require('http');
+const { initializeSocket } = require('./socket');
+const httpServer = createServer(app);
+const io = initializeSocket(httpServer);
+//close init socket.io
+
 //set route public
 app.use('/public', express.static('public'))
 
@@ -25,12 +32,13 @@ const { readdirSync } = require('fs');
 
 app.get('/', async (req, res) => {
     // res.send('Hello world')
-    res.json({ data: 'Hello Server' });
+    const mode = process.env.MODE ?? null;
+    res.json({ data: 'Hello Server', mode: mode });
 });
 
 readdirSync('./Routes')
     .map((fileName) => app.use('/api', require('./Routes/' + fileName)));
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log(`Start app listening on port ${port} ${new Date().toLocaleTimeString()}`)
 })

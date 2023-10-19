@@ -32,6 +32,10 @@ const alertBox = (severity = 'success', msg) => {
   );
 }
 
+//URL PUBLIC SERVER
+const vite_mode = import.meta.env.VITE_MODE ?? null;
+console.log(vite_mode)
+
 export default function SignInSide() {
 
   // const dispatch = useDispatch();
@@ -107,6 +111,7 @@ export default function SignInSide() {
             alignItems: 'center',
           }}
         >
+          {vite_mode}
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>

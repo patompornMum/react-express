@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { DarkMode, Feed, LightMode, Logout, Menu, People } from '@mui/icons-material';
+import { DarkMode, DonutSmall, Feed, LightMode, Logout, Menu, People } from '@mui/icons-material';
 import {
   AppBar,
   Box,
@@ -35,6 +35,12 @@ const pages = [
     title: "User Manage",
     icon: <People />,
     to: "/user-manage",
+    role: "admin"
+  },
+  {
+    title: "Analysis",
+    icon: <DonutSmall />,
+    to: "/analysis",
     role: "admin"
   },
   {

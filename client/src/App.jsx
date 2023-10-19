@@ -15,6 +15,7 @@ import Register from "./components/page/auth/Register";
 import Feed from './components/page/feed/Feed';
 import NewFeed from "./components/page/feed/NewFeed";
 import UserManage from "./components/page/user/UserManage";
+import Analysis from "./components/page/analysis/Analysis";
 
 //Protect Route
 import { CheckAuth } from './router/CheckAuth';
@@ -53,6 +54,7 @@ function App() {
             element={<CheckAuth redirectPath='/login' role='admin'><MainLayout /></CheckAuth>}
           >
             <Route path="/user-manage" element={<UserManage />} />
+            <Route path="/analysis" element={<Analysis />} />
           </Route>
 
           //Route User
